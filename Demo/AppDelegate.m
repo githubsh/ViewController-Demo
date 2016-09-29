@@ -8,18 +8,106 @@
 
 #import "AppDelegate.h"
 
-@interface AppDelegate ()
+#import "ViewController1.h"
+#import "ViewController2.h"
+#import "ViewController3.h"
+#import "ViewController4.h"
+
+#import "LoginViewController.h"
+
+
+@interface AppDelegate () <UITabBarControllerDelegate>
+
+@property(nonatomic, strong) UIViewController *v1;
+@property(nonatomic, strong) UIViewController *v2;
+@property(nonatomic, strong) UIViewController *v3;
+@property(nonatomic, strong) UIViewController *v4;
+
+@property(nonatomic, strong) UINavigationController *nav1;
+@property(nonatomic, strong) UINavigationController *nav2;
+@property(nonatomic, strong) UINavigationController *nav3;
+@property(nonatomic, strong) UINavigationController *nav4;
 
 @end
 
 @implementation AppDelegate
 
+@synthesize rootTab;
+
+@synthesize v1;
+@synthesize v2;
+@synthesize v3;
+@synthesize v4;
+
+@synthesize nav1;
+@synthesize nav2;
+@synthesize nav3;
+@synthesize nav4;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    rootTab = [[UITabBarController alloc]init];
+    rootTab.delegate = self;
+    
+    v1 = [[ViewController1 alloc]init];
+    v2 = [[ViewController2 alloc]init];
+    v3 = [[ViewController3 alloc]init];
+    v4 = [[ViewController4 alloc]init];
+    
+    nav1 = [self addController:v1 title:@"首页" image:@"btm01" selectImage:@"btm011"];
+    nav2 = [self addController:v2 title:@"找货" image:@"btm05" selectImage:@"btm055"];
+    nav3 = [self addController:v3 title:@"购物车" image:@"btm03" selectImage:@"btm033"];
+    nav4 = [self addController:v4 title:@"我" image:@"btm04" selectImage:@"btm044"];
+    
+    [rootTab addChildViewController:nav1];
+    [rootTab addChildViewController:nav2];
+    [rootTab addChildViewController:nav3];
+    [rootTab addChildViewController:nav4];
+
+    self.window.rootViewController = rootTab;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
+- (UINavigationController *)addController:(UIViewController *)childViewController
+                                    title:(NSString *)title
+                                    image:(NSString *)image
+                              selectImage:(NSString *)selectImage
+{
+    childViewController.title = title;
+    
+    childViewController.tabBarItem.image = [UIImage imageNamed:image];
+    childViewController.tabBarItem.selectedImage = [UIImage imageNamed:selectImage];
+    
+    UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:childViewController];
+    
+    return navi;
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+    if (viewController == nav2) {
+        
+#define Logined 0
+        
+        if (Logined == 0){
+            
+            LoginViewController *login = [[LoginViewController alloc]init];
+            UINavigationController *loginNav = [[UINavigationController alloc]initWithRootViewController:login];
+            
+            [viewController presentViewController:loginNav animated:YES completion:nil];
+            
+            return NO;
+        }
+    }
+    
+    return YES;
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

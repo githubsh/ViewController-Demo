@@ -6,17 +6,18 @@
 //  Copyright © 2016年 厘米科技. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "ViewController4.h"
 
-@interface ViewController ()
+@interface ViewController4 ()
 
 @end
 
-@implementation ViewController
+@implementation ViewController4
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.title = @"我";
 }
 
 
